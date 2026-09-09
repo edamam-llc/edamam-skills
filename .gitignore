@@ -1,0 +1,9 @@
+# Secrets — never commit real Edamam credentials
+.env
+.env.local
+
+# Local machine config — personal, not part of the published package
+.claude/settings.local.json
+
+# macOS
+.DS_Store
