@@ -1,0 +1,8 @@
+{
+  "name": "edamam-barcode-lookup",
+  "version": "0.1.0",
+  "description": "Look up nutrition facts for a product barcode (UPC/EAN) via the Edamam Food MCP.",
+  "author": {
+    "name": "Edamam"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "edamam",
+  "owner": {
+    "name": "Edamam"
+  },
+  "plugins": [
+    {
+      "name": "edamam-barcode-lookup",
+      "source": "./",
+      "description": "Look up nutrition facts for a product barcode (UPC/EAN) via the Edamam Food MCP."
+    }
+  ]
+}

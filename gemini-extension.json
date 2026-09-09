@@ -1,0 +1,28 @@
+{
+  "name": "edamam-barcode-lookup",
+  "version": "0.1.0",
+  "description": "Look up nutrition facts for a product barcode (UPC/EAN) via the Edamam Food MCP.",
+  "contextFileName": "GEMINI.md",
+  "settings": [
+    {
+      "name": "Edamam Application ID",
+      "description": "Your Edamam Food Database API Application ID.",
+      "envVar": "EDAMAM_APP_ID",
+      "sensitive": true
+    },
+    {
+      "name": "Edamam Application Key",
+      "description": "Your Edamam Food Database API Application Key.",
+      "envVar": "EDAMAM_APP_KEY",
+      "sensitive": true
+    }
+  ],
+  "mcpServers": {
+    "edamam-food": {
+      "httpUrl": "https://mcp.edamam.com/mcp/food",
+      "headers": {
+        "Authorization": "Bearer ${EDAMAM_APP_ID}:${EDAMAM_APP_KEY}"
+      }
+    }
+  }
+}
