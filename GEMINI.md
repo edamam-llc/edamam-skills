@@ -1,11 +1,13 @@
+<!-- Generated from skills/edamam-barcode-lookup/SKILL.md — do not edit directly. -->
+
 # Barcode Food Lookup (Edamam Food MCP)
 
 Turn a product **barcode** (the UPC/EAN number under the striped label on packaged food) into
 nutrition facts — calories, macros, and a full nutrient breakdown — using Edamam's Food MCP server.
 
-This guidance covers **barcodes only**. If the user hands you a barcode number, resolve it. If they
-describe a food in words ("2 eggs") or send a photo of a plate, tell them this is for barcodes and
-stop.
+This skill covers **barcodes only**. If the user hands you a barcode number, resolve it. If they
+describe a food in words ("2 eggs") or send a photo of a plate, tell them this skill is for
+barcodes and stop.
 
 ## Credentials — never handle them in chat
 
@@ -29,7 +31,8 @@ README setup — you do not collect the secrets yourself.
 - If the user sends a **photo/scan** of the barcode, read the digits printed **beneath** the bars
   and use those. If you cannot read all the digits confidently, ask the user to type them.
 - Strip spaces and dashes so you have a clean run of digits. Keep any leading zeros.
-- If they gave you a food *description* instead of a barcode, stop and say this handles barcodes only.
+- If they gave you a food *description* instead of a barcode, stop and say this skill handles
+  barcodes only.
 
 ### 2. Look up the barcode via the Edamam Food MCP
 
@@ -39,8 +42,7 @@ food descriptions.
 
 If no such Edamam Food tool is available in the session, the MCP isn't connected. Don't ask for
 credentials and don't try to configure it — tell the user to complete the one-time setup in the
-repository README, then stop. (Fallback reference: the Edamam Food Database API,
-https://developer.edamam.com/food-database-api.)
+repository README, then stop.
 
 ### 3. Handle the result
 
