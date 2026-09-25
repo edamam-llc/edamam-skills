@@ -1,7 +1,12 @@
 # edamam-skills
 
-Claude Code / Cursor **skills** for Edamam. Each skill lives under `skills/` and is installed by
-copying it into your Claude Code skills folder (see [Install the skill](#install-the-skill)).
+Portable **agent skills** for [Edamam](https://www.edamam.com)'s food & nutrition services, shipped
+as a monorepo. Skills follow the [Agent Skills open standard](https://agentskills.io), so the same
+top-level [`skills/`](skills/) library works across Claude Code, Gemini CLI, and other compatible
+agents. They fetch data through Edamam's hosted **MCP server**.
+
+Packaging is thin: the repo is simultaneously a Claude Code **plugin marketplace** and a Gemini CLI
+**extension**, both wrapping the one shared `skills/` folder.
 
 ## Skills
 
@@ -9,51 +14,56 @@ copying it into your Claude Code skills folder (see [Install the skill](#install
 | --- | --- | --- |
 | Barcode food lookup | [`skills/edamam-barcode-lookup/`](skills/edamam-barcode-lookup/SKILL.md) | Type or photograph a product barcode (UPC/EAN) and get calories, macros, and full nutrition from Edamam. |
 
-## Install the skill
+## Install
 
-First get the repo:
+### Claude Code — plugin (recommended)
+
+This repo is a Claude Code plugin marketplace. Installing the **`edamam`** plugin gives you every
+skill plus the Edamam MCP configuration in one step:
+
+```
+/plugin marketplace add edamam-llc/edamam-skills
+/plugin install edamam@edamam
+```
+
+Restart Claude Code, then run `/plugin` to confirm **edamam** is installed. You still need to supply
+your Edamam credentials once — see [Setup](#setup-connect-edamam-one-time).
+
+<details>
+<summary>Alternative: install a single skill by hand</summary>
+
+A skill is just a folder containing a `SKILL.md`. Copy the one you want into your skills folder:
 
 ```bash
 git clone https://github.com/edamam-llc/edamam-skills.git
-cd edamam-skills
+# personal (all your projects):
+mkdir -p ~/.claude/skills && cp -R edamam-skills/skills/edamam-barcode-lookup ~/.claude/skills/
+# or project-scoped (committable for your team):
+mkdir -p /path/to/project/.claude/skills && cp -R edamam-skills/skills/edamam-barcode-lookup /path/to/project/.claude/skills/
 ```
 
-A **skill** is just a folder containing a `SKILL.md`. Claude Code loads skills from a `skills/`
-directory — you install this one by copying the `edamam-barcode-lookup` folder into the right place.
-Pick the scope you want:
+The manual copy gives you the skill only — you'll configure the Edamam MCP separately in
+[Setup](#setup-connect-edamam-one-time).
 
-### Option A — Personal skill (available in all your projects)
+</details>
 
-Copy it into your user-level skills folder:
+### Gemini CLI — extension
 
-```bash
-mkdir -p ~/.claude/skills
-cp -R skills/edamam-barcode-lookup ~/.claude/skills/edamam-barcode-lookup
+Gemini CLI reads the same `skills/` folder natively (Agent Skills, stable since Gemini CLI v0.23.0),
+and this repo ships a `gemini-extension.json`. Install it as an extension:
+
+```
+gemini extensions install https://github.com/edamam-llc/edamam-skills
 ```
 
-Windows: copy the `skills\edamam-barcode-lookup` folder into `%USERPROFILE%\.claude\skills\`.
-
-### Option B — Project skill (available only in one project, and committable for your team)
-
-From the project where you want the skill, copy it into that project's `.claude/skills/`:
-
-```bash
-mkdir -p /path/to/your-project/.claude/skills
-cp -R skills/edamam-barcode-lookup /path/to/your-project/.claude/skills/edamam-barcode-lookup
-```
-
-Commit `.claude/skills/edamam-barcode-lookup/` to share it with everyone on that repo.
-
-### Confirm it loaded
-
-Restart / reload Claude Code, then run `/skills`. You should see **edamam-barcode-lookup** in the
-list. (You still need the Edamam MCP connected below for it to actually fetch data.)
+The extension declares two credential settings (`EDAMAM_APP_ID`, `EDAMAM_APP_KEY`); Gemini prompts
+for them on install and keeps them in its own secret storage.
 
 ## Setup: connect Edamam (one-time)
 
-The skill talks to Edamam through an **MCP server** that needs a free Edamam Food Database API key —
-an **Application ID** and an **Application Key**. You register the server **once, in your own
-terminal**, so the keys stay on your machine and never appear in a chat.
+The skills talk to Edamam through an **MCP server** that needs a free Edamam Food Database API key —
+an **Application ID** and an **Application Key**. You provide these **once, in your own environment**,
+so the keys stay on your machine and never appear in a chat.
 
 ### 1. Get your Edamam credentials
 
@@ -61,33 +71,21 @@ terminal**, so the keys stay on your machine and never appear in a chat.
 2. In the **Applications** dashboard, create an application for the **Food Database API**.
 3. Copy the **Application ID** (short) and **Application Key** (long). Treat the key like a password.
 
-### 2. Connect the Edamam MCP to Claude
-
-Pick the instructions below that match how you use Claude. In every case, replace `<app_id>` and
-`<app_key>` with the two codes from Step 1, and **keep the colon (`:`) between them**.
+### 2. Provide the credentials
 
 - Server address (always): `https://mcp.edamam.com/mcp/food`
-- Login header (always): `Authorization: Bearer <app_id>:<app_key>`
+- Auth header (always): `Authorization: Bearer <app_id>:<app_key>` — **keep the colon (`:`) between them.**
 
-These configs live on **your own machine**, not in this repo — your keys are never committed and
-never typed into a chat.
+**Claude Code (plugin):** the bundled [`.mcp.json`](.mcp.json) reads two environment variables. Export
+them in your shell (add to `~/.zshrc` / `~/.bashrc` to persist), then launch Claude Code from that
+shell:
 
-**Cursor** — Settings → Cursor Settings → MCP → **Add new global MCP server** (this opens `mcp.json`), and paste:
-
-```json
-{
-  "mcpServers": {
-    "edamam-food": {
-      "url": "https://mcp.edamam.com/mcp/food",
-      "headers": {
-        "Authorization": "Bearer <app_id>:<app_key>"
-      }
-    }
-  }
-}
+```bash
+export EDAMAM_APP_ID="your_app_id"
+export EDAMAM_APP_KEY="your_app_key"
 ```
 
-**Claude Code (the terminal app)** — paste into your terminal, fill in your two codes, press Enter:
+Prefer to keep it out of your environment? Register the server directly instead:
 
 ```bash
 claude mcp add --transport http --scope user edamam-food \
@@ -95,70 +93,33 @@ claude mcp add --transport http --scope user edamam-food \
   --header "Authorization: Bearer <app_id>:<app_key>"
 ```
 
-(`--scope user` makes it available in all your projects and saves the keys to your private
-`~/.claude.json`.)
+**Gemini CLI:** you already entered the two codes when installing the extension (above). To change
+them, reinstall or edit the extension's settings.
 
-**VS Code** — open your MCP config (`.vscode/mcp.json`, or the MCP settings) and paste:
-
-```json
-{
-  "servers": {
-    "edamam-food": {
-      "type": "http",
-      "url": "https://mcp.edamam.com/mcp/food",
-      "headers": {
-        "Authorization": "Bearer <app_id>:<app_key>"
-      }
-    }
-  }
-}
-```
-
-> **Paste your codes into these config files, not into a chat with Claude.** If you ever paste a key
-> into a chat, treat it as compromised and rotate it in the Edamam dashboard.
+> **Paste your codes into config/env, not into a chat.** If you ever paste a key into a chat, treat
+> it as compromised and rotate it in the Edamam dashboard.
 
 ### 3. Confirm it's connected
 
-Fully restart / reload your Claude app so it picks up the new server.
+Fully restart your agent so it picks up the server.
 
-- **Cursor / VS Code:** reopen the app; `edamam-food` should appear with a green / enabled status.
 - **Claude Code:** run `/mcp` and confirm `edamam-food` shows as **connected**.
+- **Gemini CLI:** the `edamam-food` server should load on startup.
 
-If it shows an error, the most common cause is a typo in the codes or a missing colon between
-`<app_id>` and `<app_key>`. Re-check Step 2 and try again. Once connected, you're done with setup for
-good.
-
-<details>
-<summary>Alternative: per-project config with environment variables (for teams sharing this repo)</summary>
-
-Instead of pasting keys into each app, this repo ships a secret-free [`.mcp.json`](.mcp.json) that
-reads two environment variables. Export them in your shell (add to `~/.zshrc` / `~/.bashrc` to
-persist), then launch your editor from that same terminal:
-
-```bash
-export EDAMAM_APP_ID="your_app_id"
-export EDAMAM_APP_KEY="your_app_key"
-```
-
-`.mcp.json` references `${EDAMAM_APP_ID}` / `${EDAMAM_APP_KEY}`, so the server connects automatically
-when those variables are set. (They're read from the shell environment, not from a `.env` file.)
-
-</details>
+If it errors, the most common cause is a typo in the codes or a missing colon between `<app_id>` and
+`<app_key>`. Re-check step 2.
 
 ## Use it
 
-Once the skill is installed and the MCP is connected, there are two ways it runs:
+Once a skill is installed and the MCP is connected, there are two ways it runs:
 
-- **Automatically** — just give Claude a barcode: *"Look up this barcode: 049000042566"* (a photo of
-  a barcode works too). Claude matches the request to the skill's description and runs
-  **edamam-barcode-lookup**, returning the product, calories, and macros.
-- **Explicitly** — type `/edamam-barcode-lookup` to invoke it directly, no guessing.
+- **Automatically** — just give the agent a barcode: *"Look up this barcode: 049000042566"* (a photo
+  of a barcode works too). It matches the request to the skill and returns the product, calories, and
+  macros.
+- **Explicitly (Claude Code)** — invoke it by its namespaced name: `/edamam:edamam-barcode-lookup`.
 
-If Claude answers a barcode question *without* the skill (e.g. by calling the MCP tool directly),
-it usually means the skill isn't installed yet — run `/skills` to check, and revisit
-[Install the skill](#install-the-skill).
+## Contributing
 
-## Maintainers
-
-The skill lives at `skills/edamam-barcode-lookup/SKILL.md` — a single source of truth that Claude
-Code loads directly. Edit it there; there is no mirror copy to keep in sync.
+Skills live under `skills/<name>/SKILL.md` — the single source of truth, loaded directly by every
+platform. Add a skill by dropping a new `skills/<name>/` folder in; it ships with the `edamam` plugin
+and the Gemini extension automatically. Follow the existing `edamam-<capability>` naming convention.
