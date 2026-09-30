@@ -1,12 +1,12 @@
 ---
 name: edamam-barcode-lookup
-description: Look up nutrition facts for a product barcode (UPC/EAN) using the Edamam Food MCP. Use when the user provides a barcode number (or a photo/scan of one) and wants calories, macros, or full nutrition for that packaged product. Barcode input only — for typed food descriptions or plate photos, this skill is not the right fit.
+description: Look up nutrition facts for a product barcode (UPC/EAN) using the Edamam MCP. Use when the user provides a barcode number (or a photo/scan of one) and wants calories, macros, or full nutrition for that packaged product. Barcode input only — for typed food descriptions or plate photos, this skill is not the right fit.
 ---
 
-# Barcode Food Lookup (Edamam Food MCP)
+# Barcode Food Lookup (via Edamam MCP)
 
 Turn a product **barcode** (the UPC/EAN number under the striped label on packaged food) into
-nutrition facts — calories, macros, and a full nutrient breakdown — using Edamam's Food MCP server.
+nutrition facts — calories, macros, and a full nutrient breakdown — using Edamam's MCP server.
 
 This skill covers **barcodes only**. If the user hands you a barcode number, resolve it. If they
 describe a food in words ("2 eggs") or send a photo of a plate, tell them this skill is for
@@ -14,7 +14,7 @@ barcodes and stop.
 
 ## Credentials — never handle them in chat
 
-The Edamam Food MCP authenticates with secret credentials that are configured **once, outside the
+The Edamam MCP authenticates with secret credentials that are configured **once, outside the
 conversation** (see the repository README). At runtime you must **never** ask for, accept, echo, or
 store them:
 
@@ -37,13 +37,11 @@ README setup — you do not collect the secrets yourself.
 - If they gave you a food *description* instead of a barcode, stop and say this skill handles
   barcodes only.
 
-### 2. Look up the barcode via the Edamam Food MCP
+### 2. Look up the barcode via the Edamam MCP
 
-Use the connected Edamam Food MCP tool that returns nutrition for a food query. It accepts either plain-text food descriptions or UPC/EAN barcodes as queries;
-here you pass **only barcodes** — the raw digits, no text food descriptions. You can look up several
-barcodes in one call by passing multiple entries.
+Use the connected Edamam MCP tool that accepts food queries and returns nutrient breakdowns (calories, macronutrients, micronutrients) for each one. The tool accepts either plain-text food descriptions or UPC/EAN barcodes as queries. For this task, you should pass only barcodes and no text food descriptions. The barcodes should consist only of raw digits. To look up several barcodes, pass them in one call as separate entries, one barcode per entry.
 
-If no such Edamam Food tool is available in the session, the MCP isn't connected. Don't ask for
+If no such Edamam MCP tool is available in the session, the MCP isn't connected. Don't ask for
 credentials and don't try to configure it — tell the user to complete the one-time setup in the
 repository README, then stop.
 
