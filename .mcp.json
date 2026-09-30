@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "edamam-food": {
+      "type": "http",
+      "url": "https://mcp.edamam.com/mcp/food",
+      "headers": {
+        "Authorization": "Bearer ${EDAMAM_APP_ID}:${EDAMAM_APP_KEY}"
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "edamam",
+  "version": "0.1.0",
+  "description": "Edamam food & nutrition skills, backed by the Edamam Food MCP. Currently includes barcode (UPC/EAN) nutrition lookup.",
+  "settings": [
+    {
+      "name": "Edamam Application ID",
+      "description": "Your Edamam Food Database API Application ID.",
+      "envVar": "EDAMAM_APP_ID",
+      "sensitive": true
+    },
+    {
+      "name": "Edamam Application Key",
+      "description": "Your Edamam Food Database API Application Key.",
+      "envVar": "EDAMAM_APP_KEY",
+      "sensitive": true
+    }
+  ],
+  "mcpServers": {
+    "edamam-food": {
+      "httpUrl": "https://mcp.edamam.com/mcp/food",
+      "headers": {
+        "Authorization": "Bearer ${EDAMAM_APP_ID}:${EDAMAM_APP_KEY}"
+      }
+    }
+  }
+}

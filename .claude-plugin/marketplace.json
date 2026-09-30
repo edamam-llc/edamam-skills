@@ -1,0 +1,13 @@
+{
+  "name": "edamam",
+  "owner": {
+    "name": "Edamam"
+  },
+  "plugins": [
+    {
+      "name": "edamam",
+      "source": "./",
+      "description": "Edamam food & nutrition skills, backed by the Edamam Food MCP. Currently includes barcode (UPC/EAN) nutrition lookup."
+    }
+  ]
+}

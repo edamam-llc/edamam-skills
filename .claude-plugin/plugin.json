@@ -1,0 +1,8 @@
+{
+  "name": "edamam",
+  "version": "0.1.0",
+  "description": "Edamam food & nutrition skills, backed by the Edamam Food MCP. Currently includes barcode (UPC/EAN) nutrition lookup.",
+  "author": {
+    "name": "Edamam"
+  }
+}
