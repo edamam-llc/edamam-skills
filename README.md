@@ -76,16 +76,16 @@ so the keys stay on your machine and never appear in a chat.
 - Server address (always): `https://mcp.edamam.com/mcp/food`
 - Auth header (always): `Authorization: Bearer <app_id>:<app_key>` — **keep the colon (`:`) between them.**
 
-**Claude Code (plugin):** the bundled [`.mcp.json`](.mcp.json) reads two environment variables. Export
-them in your shell (add to `~/.zshrc` / `~/.bashrc` to persist), then launch Claude Code from that
-shell:
+**Claude Code (plugin):** you don't set any environment variables. When you install and enable the
+**edamam** plugin, Claude Code prompts you for your **Application ID** and **Application Key** in a
+secure dialog and stores them in your operating system's credential store — you won't re-enter them
+each session. Type them into that prompt; never paste them into a chat message.
 
-```bash
-export EDAMAM_APP_ID="your_app_id"
-export EDAMAM_APP_KEY="your_app_key"
-```
+<details>
+<summary>Advanced: register the server manually instead</summary>
 
-Prefer to keep it out of your environment? Register the server directly instead:
+If you install a single skill by hand (without the plugin), the credential prompt above doesn't
+apply, so register the Edamam MCP server yourself:
 
 ```bash
 claude mcp add --transport http --scope user edamam-food \
@@ -93,11 +93,16 @@ claude mcp add --transport http --scope user edamam-food \
   --header "Authorization: Bearer <app_id>:<app_key>"
 ```
 
+Don't combine this with the plugin — running both registers two `edamam-food` servers that shadow
+each other.
+
+</details>
+
 **Gemini CLI:** you already entered the two codes when installing the extension (above). To change
 them, reinstall or edit the extension's settings.
 
-> **Paste your codes into config/env, not into a chat.** If you ever paste a key into a chat, treat
-> it as compromised and rotate it in the Edamam dashboard.
+> **Enter your codes in the secure prompt (or config), never in a chat.** If you ever paste a key
+> into a chat, treat it as compromised and rotate it in the Edamam dashboard.
 
 ### 3. Confirm it's connected
 
