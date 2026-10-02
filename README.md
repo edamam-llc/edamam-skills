@@ -14,6 +14,9 @@ Packaging is thin: the repo is simultaneously a Claude Code **plugin marketplace
 | --- | --- | --- |
 | Barcode food lookup | [`skills/edamam-barcode-lookup/`](skills/edamam-barcode-lookup/SKILL.md) | Type or photograph a product barcode (UPC/EAN) and get calories, macros, and full nutrition from Edamam. |
 
+## Process
+Lookups send the barcode digits and your Edamam API key to `https://mcp.edamam.com/mcp/food`; nutrition data comes back from there. 
+
 ## Install
 
 ### Claude Code — plugin (recommended)
@@ -27,8 +30,7 @@ skill plus the Edamam MCP configuration in one step:
 ```
 
 Restart Claude Code, then run `/plugin` to confirm **edamam** is installed. You still need to supply
-your Edamam credentials once — see [Setup](#setup-connect-edamam-one-time).
-
+a
 <details>
 <summary>Alternative: install a single skill by hand</summary>
 
