@@ -30,7 +30,8 @@ skill plus the Edamam MCP configuration in one step:
 ```
 
 Restart Claude Code, then run `/plugin` to confirm **edamam** is installed. You still need to supply
-a
+your Edamam credentials once — see [Setup](#setup-connect-edamam-one-time).
+
 <details>
 <summary>Alternative: install a single skill by hand</summary>
 
@@ -75,9 +76,6 @@ so the keys stay on your machine and never appear in a chat.
 
 ### 2. Provide the credentials
 
-- Server address (always): `https://mcp.edamam.com/mcp/food`
-- Auth header (always): `Authorization: Bearer <app_id>:<app_key>` — **keep the colon (`:`) between them.**
-
 **Claude Code (plugin):** you don't set any environment variables. When you install and enable the
 **edamam** plugin, Claude Code prompts you for your **Application ID** and **Application Key** in a
 secure dialog and stores them in your operating system's credential store — you won't re-enter them
@@ -95,8 +93,8 @@ claude mcp add --transport http --scope user edamam-food \
   --header "Authorization: Bearer <app_id>:<app_key>"
 ```
 
-Don't combine this with the plugin — running both registers two `edamam-food` servers that shadow
-each other.
+**Keep the colon (`:`) between `<app_id>` and `<app_key>`.** Don't combine this with the plugin —
+running both registers two `edamam-food` servers that shadow each other.
 
 </details>
 
