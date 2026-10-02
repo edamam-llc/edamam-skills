@@ -4,5 +4,21 @@
   "description": "Edamam food & nutrition skills, backed by the Edamam Food MCP. Currently includes barcode (UPC/EAN) nutrition lookup.",
   "author": {
     "name": "Edamam"
+  },
+  "userConfig": {
+  "EDAMAM_APP_ID": {
+    "type": "string",
+    "title": "Edamam Application ID",
+    "description": "Your Edamam Food Database API Application ID.",
+    "required": true,
+    "sensitive": true
+  },
+  "EDAMAM_APP_KEY": {
+    "type": "string",
+    "title": "Edamam Application Key",
+    "description": "Your Edamam Food Database API Application Key.",
+    "required": true,
+    "sensitive": true
   }
+}
 }
