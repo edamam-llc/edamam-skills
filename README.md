@@ -128,3 +128,7 @@ Once a skill is installed and the MCP is connected, there are two ways it runs:
 Skills live under `skills/<name>/SKILL.md` — the single source of truth, loaded directly by every
 platform. Add a skill by dropping a new `skills/<name>/` folder in; it ships with the `edamam` plugin
 and the Gemini extension automatically. Follow the existing `edamam-<capability>` naming convention.
+
+## License
+
+This skill is licensed under Apache 2.0. It requires access to the Edamam MCP, which is governed separately by the [Edamam Terms of Service](https://www.edamam.com/terms/api/).
