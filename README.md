@@ -14,6 +14,9 @@ Packaging is thin: the repo is simultaneously a Claude Code **plugin marketplace
 | --- | --- | --- |
 | Barcode food lookup | [`skills/edamam-barcode-lookup/`](skills/edamam-barcode-lookup/SKILL.md) | Type or photograph a product barcode (UPC/EAN) and get calories, macros, and full nutrition from Edamam. |
 
+## Process
+Lookups send the barcode digits and your Edamam API key to `https://mcp.edamam.com/mcp/food`; nutrition data comes back from there. 
+
 ## Install
 
 ### Claude Code — plugin (recommended)
@@ -73,19 +76,16 @@ so the keys stay on your machine and never appear in a chat.
 
 ### 2. Provide the credentials
 
-- Server address (always): `https://mcp.edamam.com/mcp/food`
-- Auth header (always): `Authorization: Bearer <app_id>:<app_key>` — **keep the colon (`:`) between them.**
+**Claude Code (plugin):** you don't set any environment variables. When you install and enable the
+**edamam** plugin, Claude Code prompts you for your **Application ID** and **Application Key** in a
+secure dialog and stores them in your operating system's credential store — you won't re-enter them
+each session. Type them into that prompt; never paste them into a chat message.
 
-**Claude Code (plugin):** the bundled [`.mcp.json`](.mcp.json) reads two environment variables. Export
-them in your shell (add to `~/.zshrc` / `~/.bashrc` to persist), then launch Claude Code from that
-shell:
+<details>
+<summary>Advanced: register the server manually instead</summary>
 
-```bash
-export EDAMAM_APP_ID="your_app_id"
-export EDAMAM_APP_KEY="your_app_key"
-```
-
-Prefer to keep it out of your environment? Register the server directly instead:
+If you install a single skill by hand (without the plugin), the credential prompt above doesn't
+apply, so register the Edamam MCP server yourself:
 
 ```bash
 claude mcp add --transport http --scope user edamam-food \
@@ -93,11 +93,16 @@ claude mcp add --transport http --scope user edamam-food \
   --header "Authorization: Bearer <app_id>:<app_key>"
 ```
 
+**Keep the colon (`:`) between `<app_id>` and `<app_key>`.** Don't combine this with the plugin —
+running both registers two `edamam-food` servers that shadow each other.
+
+</details>
+
 **Gemini CLI:** you already entered the two codes when installing the extension (above). To change
 them, reinstall or edit the extension's settings.
 
-> **Paste your codes into config/env, not into a chat.** If you ever paste a key into a chat, treat
-> it as compromised and rotate it in the Edamam dashboard.
+> **Enter your codes in the secure prompt (or config), never in a chat.** If you ever paste a key
+> into a chat, treat it as compromised and rotate it in the Edamam dashboard.
 
 ### 3. Confirm it's connected
 
@@ -123,3 +128,7 @@ Once a skill is installed and the MCP is connected, there are two ways it runs:
 Skills live under `skills/<name>/SKILL.md` — the single source of truth, loaded directly by every
 platform. Add a skill by dropping a new `skills/<name>/` folder in; it ships with the `edamam` plugin
 and the Gemini extension automatically. Follow the existing `edamam-<capability>` naming convention.
+
+## License
+
+This skill is licensed under Apache 2.0. It requires access to the Edamam MCP, which is governed separately by the [Edamam Terms of Service](https://www.edamam.com/terms/api/).
