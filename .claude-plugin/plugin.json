@@ -15,6 +15,7 @@
   }
 },
 "displayName": "Edamam",
+"privacyPolicyUrl": "https://www.edamam.com/privacy/",
 "homepage": "https://github.com/edamam-llc/edamam-skills",
 "repository": "https://github.com/edamam-llc/edamam-skills",
 "keywords": ["nutrition", "food", "macros", "calories","barcode", "upc", "ean", "edamam"],
