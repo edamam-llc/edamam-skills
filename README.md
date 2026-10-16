@@ -59,14 +59,15 @@ and this repo ships a `gemini-extension.json`. Install it as an extension:
 gemini extensions install https://github.com/edamam-llc/edamam-skills
 ```
 
-The extension declares two credential settings (`EDAMAM_APP_ID`, `EDAMAM_APP_KEY`); Gemini prompts
-for them on install and keeps them in its own secret storage.
+The extension declares one credential setting (`EDAMAM_CREDENTIALS`, your `APP_ID:APP_KEY`); Gemini
+prompts for it on install and keeps it in its own secret storage.
 
 ## Setup: connect Edamam (one-time)
 
 The skills talk to Edamam through an **MCP server** that needs a free Edamam Food Database API key —
-an **Application ID** and an **Application Key**. You provide these **once, in your own environment**,
-so the keys stay on your machine and never appear in a chat.
+an **Application ID** and an **Application Key**, which you provide joined as `APP_ID:APP_KEY`. You
+provide this **once, in your own environment**, so the keys stay on your machine and never appear in
+a chat.
 
 ### 1. Get your Edamam credentials
 
@@ -77,9 +78,10 @@ so the keys stay on your machine and never appear in a chat.
 ### 2. Provide the credentials
 
 **Claude Code (plugin):** you don't set any environment variables. When you install and enable the
-**edamam** plugin, Claude Code prompts you for your **Application ID** and **Application Key** in a
-secure dialog and stores them in your operating system's credential store — you won't re-enter them
-each session. Type them into that prompt; never paste them into a chat message.
+**edamam** plugin, Claude Code prompts you for your credentials in a secure dialog and stores them in
+your operating system's credential store — you won't re-enter them each session. Enter them as
+`APP_ID:APP_KEY` (your Application ID and Application Key joined by a colon). Type them into that
+prompt; never paste them into a chat message.
 
 <details>
 <summary>Advanced: register the server manually instead</summary>
@@ -98,8 +100,8 @@ running both registers two `edamam-food` servers that shadow each other.
 
 </details>
 
-**Gemini CLI:** you already entered the two codes when installing the extension (above). To change
-them, reinstall or edit the extension's settings.
+**Gemini CLI:** you already entered your `APP_ID:APP_KEY` when installing the extension (above). To
+change it, reinstall or edit the extension's settings.
 
 > **Enter your codes in the secure prompt (or config), never in a chat.** If you ever paste a key
 > into a chat, treat it as compromised and rotate it in the Edamam dashboard.
