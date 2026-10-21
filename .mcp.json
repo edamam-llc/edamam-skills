@@ -4,7 +4,7 @@
       "type": "http",
       "url": "https://mcp.edamam.com/mcp/food",
       "headers": {
-        "Authorization": "Bearer ${user_config.EDAMAM_APP_ID}:${user_config.EDAMAM_APP_KEY}"
+        "Authorization": "${user_config.EDAMAM_AUTH_HEADER}"
       }
     }
   }

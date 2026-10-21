@@ -77,9 +77,10 @@ so the keys stay on your machine and never appear in a chat.
 ### 2. Provide the credentials
 
 **Claude Code (plugin):** you don't set any environment variables. When you install and enable the
-**edamam** plugin, Claude Code prompts you for your **Application ID** and **Application Key** in a
-secure dialog and stores them in your operating system's credential store — you won't re-enter them
-each session. Type them into that prompt; never paste them into a chat message.
+**edamam** plugin, Claude Code prompts you for your Edamam Authorization header in a secure dialog
+and stores it in your operating system's credential store — you won't re-enter it each session.
+Enter it as `Bearer <app_id>:<app_key>` (the word `Bearer`, a space, then your Application ID and
+Application Key joined by a colon). Type it into that prompt; never paste it into a chat message.
 
 <details>
 <summary>Advanced: register the server manually instead</summary>
@@ -111,8 +112,8 @@ Fully restart your agent so it picks up the server.
 - **Claude Code:** run `/mcp` and confirm `edamam-food` shows as **connected**.
 - **Gemini CLI:** the `edamam-food` server should load on startup.
 
-If it errors, the most common cause is a typo in the codes or a missing colon between `<app_id>` and
-`<app_key>`. Re-check step 2.
+If it errors, the most common cause is a typo in the codes, a missing colon between `<app_id>` and
+`<app_key>`, or (plugin) a missing `Bearer ` prefix. Re-check step 2.
 
 ## Use it
 

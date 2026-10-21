@@ -6,17 +6,10 @@
     "name": "Edamam"
   },
   "userConfig": {
-  "EDAMAM_APP_ID": {
+  "EDAMAM_AUTH_HEADER": {
     "type": "string",
-    "title": "Edamam Application ID",
-    "description": "Your Edamam Food Database API Application ID.",
-    "required": true,
-    "sensitive": true
-  },
-  "EDAMAM_APP_KEY": {
-    "type": "string",
-    "title": "Edamam Application Key",
-    "description": "Your Edamam Food Database API Application Key.",
+    "title": "Edamam Authorization header",
+    "description": "Your full Edamam Authorization header value: Bearer APP_ID:APP_KEY (the word Bearer, a space, then your Application ID and Application Key joined by a colon).",
     "required": true,
     "sensitive": true
   }
