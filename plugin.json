@@ -1,0 +1,14 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "edamam",
+  "version": "0.1.0",
+  "description": "Edamam food & nutrition skills. Barcode (UPC/EAN) nutrition lookup via the Edamam Food MCP (configured separately by the user).",
+  "author": {
+    "name": "Edamam",
+    "url": "https://www.edamam.com"
+  },
+  "homepage": "https://github.com/edamam-llc/edamam-skills",
+  "repository": "https://github.com/edamam-llc/edamam-skills",
+  "license": "Apache-2.0",
+  "keywords": ["nutrition", "food", "barcode", "upc", "ean", "edamam"]
+}
