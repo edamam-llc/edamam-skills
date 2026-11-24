@@ -62,6 +62,27 @@ gemini extensions install https://github.com/edamam-llc/edamam-skills
 The extension declares one credential setting (`EDAMAM_CREDENTIALS`, your `APP_ID:APP_KEY`); Gemini
 prompts for it on install and keeps it in its own secret storage.
 
+### Hermes Agent — plugin
+
+Hermes installs this repo as a portable **Agent Plugin** (the shared `skills/` folder, discovered
+from the root `plugin.json`). Once it's listed in the Hermes plugin catalog:
+
+```
+hermes plugins install edamam
+hermes plugins enable edamam
+```
+
+Or install straight from this repo before/without the catalog:
+
+```
+hermes plugins install edamam-llc/edamam-skills
+hermes plugins enable edamam
+```
+
+Portable plugins install **disabled**, so the `enable` step is required. The skill then loads as
+`edamam:edamam-barcode-lookup`. Hermes does not carry credentials inside a plugin, so you configure
+the Edamam MCP separately — see [Setup](#setup-connect-edamam-one-time).
+
 ## Setup: connect Edamam (one-time)
 
 The skills talk to Edamam through an **MCP server** that needs a free Edamam Food Database API key —
@@ -102,6 +123,27 @@ running both registers two `edamam-food` servers that shadow each other.
 
 **Gemini CLI:** you already entered your `APP_ID:APP_KEY` when installing the extension (above). To
 change it, reinstall or edit the extension's settings.
+
+**Hermes Agent:** the plugin ships the skill only, so register the Edamam MCP in your own Hermes
+config. Add the server to `~/.hermes/config.yaml`:
+
+```yaml
+mcp_servers:
+  edamam-food:
+    url: "https://mcp.edamam.com/mcp/food"
+    headers:
+      Authorization: "Bearer ${EDAMAM_CREDENTIALS}"
+```
+
+and put your key in `~/.hermes/.env` (Hermes resolves the `${EDAMAM_CREDENTIALS}` placeholder from
+there):
+
+```
+EDAMAM_CREDENTIALS=<APP_ID>:<APP_KEY>
+```
+
+**Keep the colon (`:`) between `<APP_ID>` and `<APP_KEY>`.** Restart Hermes, then run
+`hermes mcp list` to confirm `edamam-food` is connected.
 
 > **Enter your codes in the secure prompt (or config), never in a chat.** If you ever paste a key
 > into a chat, treat it as compromised and rotate it in the Edamam dashboard.
